@@ -1,0 +1,268 @@
+camper: /project$ psql --username=freecodecamp --dbname=postgres
+Border style is 2.
+Pager usage is off.
+psql (12.17 (Ubuntu 12.17-1.pgdg22.04+1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+postgres=> CREATE DATABASE universe;
+CREATE DATABASE
+postgres=> \c universe
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+You are now connected to database "universe" as user "freecodecamp".
+universe=> CREATE TABLE galaxy (
+universe(>     galaxy_id SERIAL PRIMARY KEY,
+universe(>     name VARCHAR(100) UNIQUE NOT NULL,
+universe(>     description TEXT,
+universe(>     has_life BOOLEAN NOT NULL,
+universe(>     galaxy_type VARCHAR(50) NOT NULL
+universe(> );
+CREATE TABLE
+universe=> CREATE TABLE star (
+universe(>     star_id SERIAL PRIMARY KEY,
+universe(>     name VARCHAR(100) UNIQUE NOT NULL,
+universe(>     galaxy_id INT REFERENCES galaxy(galaxy_id),
+universe(>     age_in_millions_of_years INT,
+universe(>     is_spherical BOOLEAN NOT NULL
+universe(> );
+IAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT CREATE TABLE
+universe=> 
+universe=> CREATE TABLE planet (
+universe(>     planet_id SERIAL PRIMARY KEY,
+universe(>     name VARCHAR(100) UNIQUE NOT NULL,
+universe(>     star_id INT REFERENCES star(star_id),
+universe(>     distance_from_earth NUMERIC,
+universe(>     has_life BOOLEAN NOT NULL,
+universe(>     planet_type VARCHAR(50) NOT NULL
+universe(> );
+KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    plCREATE TABLE
+universe=> 
+universe=> CREATE TABLE moon (
+universe(>     moon_id SERIAL PRIMARY KEY,
+universe(>     name VARCHAR(100) UNIQUE NOT NULL,
+universe(>     planet_id INT REFERENCES planet(planet_id),
+universe(>     radius_in_km NUMERIC NOT NULL,
+universe(>     is_spherical BOOLEAN NOT NULL
+universe(> );INSERT INTO galaxy (name, description, has_life, galaxy_type) VALUES
+CREATE TABLE
+universe-> ('Milky Way', 'Our home galaxy', true, 'Spiral'),
+universe-> ('Andromeda', 'Nearest major galaxy', false, 'Spiral'),
+universe-> ('Triangulum', 'Small spiral galaxy', false, 'Spiral'),
+universe-> ('Messier 81', 'A bright galaxy', false, 'Spiral'),
+universe-> ('Whirlpool', 'A interacting grand-design spiral galaxy', false, 'Spiral'),
+universe-> ('NGC 1300', 'A barred spiral galaxy', false, 'Barred Spiral');
+INSERT 0 6
+universe=> 
+universe=> INSERT INTO star (name, galaxy_id, age_in_millions_of_years, is_spherical) VALUES
+universe-> ('Sun', 1, 4500, true),
+universe-> ('Proxima Centauri', 1, 4600, true),
+universe-> ('Sirius', 2, 300, true),
+universe-> ('Betelgeuse', 2, 8000, true),
+universe-> ('Vega', 3, 450, true),
+universe-> ('Rigel', 4, 860, true);
+INSERT 0 6
+universe=> 
+universe=> INSERT INTO planet (name, star_id, distance_from_earth, has_life, planet_type) VALUES
+universe-> ('Earth', 1, 0, true, 'Terrestrial'),
+universe-> ('Mars', 1, 225000000, false, 'Terrestrial'),
+universe-> ('Jupiter', 1, 778500000, false, 'Gas Giant'),
+universe-> ('Proxima b', 2, 4.24, false, 'Terrestrial'),
+universe-> ('Sirius b', 3, 8.6, false, 'Gas Giant'),
+universe-> ('Betelgeuse b', 4, 642.5, false, 'Gas Giant'),
+universe-> ('Vega b', 5, 25, false, 'Terrestrial'),
+universe-> ('Rigel b', 6, 860, false, 'Terrestrial'),
+universe-> ('Mars II', 1, 225000001, false, 'Terrestrial'),
+universe-> ('Mars III', 1, 225000002, false, 'Terrestrial'),
+universe-> ('Mars IV', 1, 225000003, false, 'Terrestrial'),
+universe-> ('Mars V', 1, 225000004, false, 'Terrestrial');
+INSERT 0 12
+universe=> 
+universe=> INSERT INTO moon (name, planet_id, radius_in_km, is_spherical) VALUES
+universe-> ('Moon', 1, 1737.4, true),
+universe-> ('Phobos', 2, 11.3, true),
+universe-> ('Deimos', 2, 6.2, true),
+universe-> ('Ganymede', 3, 2634.1, true),
+universe-> ('Europa', 3, 1560.8, true),
+universe-> ('Callisto', 3, 2410.3, true),
+universe-> ('Proxima Centauri I', 4, 1000, true),
+universe-> ('Sirius I', 5, 3000, true),
+universe-> ('Betelgeuse I', 6, 4000, true),
+universe-> ('Vega I', 7, 1500, true),
+universe-> ('Rigel I', 8, 2500, true),
+universe-> ('Mars II I', 9, 10, true),
+universe-> ('Mars III I', 10, 11, true),
+universe-> ('Mars IV I', 11, 12, true),
+universe-> ('Mars V I', 12, 13, true),
+universe-> ('Mars V II', 12, 14, true),
+universe-> ('Mars V III', 12, 15, true),
+universe-> ('Mars V IV', 12, 16, true),
+universe-> ('Mars V V', 12, 17, true),
+universe-> ('Mars V VI', 12, 18, true);
+INSERT 0 20
+universe=> \d
+                     List of relations
++--------+----------------------+----------+--------------+
+| Schema |         Name         |   Type   |    Owner     |
++--------+----------------------+----------+--------------+
+| public | galaxy               | table    | freecodecamp |
+| public | galaxy_galaxy_id_seq | sequence | freecodecamp |
+| public | moon                 | table    | freecodecamp |
+| public | moon_moon_id_seq     | sequence | freecodecamp |
+| public | planet               | table    | freecodecamp |
+| public | planet_planet_id_seq | sequence | freecodecamp |
+| public | star                 | table    | freecodecamp |
+| public | star_star_id_seq     | sequence | freecodecamp |
++--------+----------------------+----------+--------------+
+(8 rows)
+
+universe=> CREATE TABLE galaxy_type (
+universe(>     galaxy_type_id SERIAL PRIMARY KEY,
+universe(>     type_name VARCHAR(50) UNIQUE NOT NULL,
+universe(>     description TEXT,
+universe(>     number_of_galaxies INT NOT NULL,
+universe(>     average_size INT
+universe(> );
+CREATE TABLE
+universe=> INSERT INTO galaxy_type (type_name, description, number_of_galaxies, average_size) VALUES
+universe-> ('Spiral', 'A galaxy with a spiral structure', 100, 100000),
+universe-> ('Elliptical', 'A galaxy that is roughly ellipsoidal in shape', 50, 200000),
+universe-> ('Irregular', 'A galaxy with no distinct shape', 30, 50000);
+INSERT 0 3
+universe=> -- Check rows in galaxy table
+universe=> SELECT * FROM galaxy;
++-----------+------------+------------------------------------------+----------+---------------+
+| galaxy_id |    name    |               description                | has_life |  galaxy_type  |
++-----------+------------+------------------------------------------+----------+---------------+
+|         1 | Milky Way  | Our home galaxy                          | t        | Spiral        |
+|         2 | Andromeda  | Nearest major galaxy                     | f        | Spiral        |
+|         3 | Triangulum | Small spiral galaxy                      | f        | Spiral        |
+|         4 | Messier 81 | A bright galaxy                          | f        | Spiral        |
+|         5 | Whirlpool  | A interacting grand-design spiral galaxy | f        | Spiral        |
+|         6 | NGC 1300   | A barred spiral galaxy                   | f        | Barred Spiral |
++-----------+------------+------------------------------------------+----------+---------------+
+(6 rows)
+
+universe=> 
+universe=> -- Check rows in star table
+universe=> SELECT * FROM star;
++---------+------------------+-----------+--------------------------+--------------+
+| star_id |       name       | galaxy_id | age_in_millions_of_years | is_spherical |
++---------+------------------+-----------+--------------------------+--------------+
+|       1 | Sun              |         1 |                     4500 | t            |
+|       2 | Proxima Centauri |         1 |                     4600 | t            |
+|       3 | Sirius           |         2 |                      300 | t            |
+|       4 | Betelgeuse       |         2 |                     8000 | t            |
+|       5 | Vega             |         3 |                      450 | t            |
+|       6 | Rigel            |         4 |                      860 | t            |
++---------+------------------+-----------+--------------------------+--------------+
+(6 rows)
+
+universe=> 
+universe=> -- Check rows in planet table
+universe=> SELECT * FROM planet;
++-----------+--------------+---------+---------------------+----------+-------------+
+| planet_id |     name     | star_id | distance_from_earth | has_life | planet_type |
++-----------+--------------+---------+---------------------+----------+-------------+
+|         1 | Earth        |       1 |                   0 | t        | Terrestrial |
+|         2 | Mars         |       1 |           225000000 | f        | Terrestrial |
+|         3 | Jupiter      |       1 |           778500000 | f        | Gas Giant   |
+|         4 | Proxima b    |       2 |                4.24 | f        | Terrestrial |
+|         5 | Sirius b     |       3 |                 8.6 | f        | Gas Giant   |
+|         6 | Betelgeuse b |       4 |               642.5 | f        | Gas Giant   |
+|         7 | Vega b       |       5 |                  25 | f        | Terrestrial |
+|         8 | Rigel b      |       6 |                 860 | f        | Terrestrial |
+|         9 | Mars II      |       1 |           225000001 | f        | Terrestrial |
+|        10 | Mars III     |       1 |           225000002 | f        | Terrestrial |
+|        11 | Mars IV      |       1 |           225000003 | f        | Terrestrial |
+|        12 | Mars V       |       1 |           225000004 | f        | Terrestrial |
++-----------+--------------+---------+---------------------+----------+-------------+
+(12 rows)
+
+universe=> 
+universe=> -- Check rows in moon table
+universe=> SELECT * FROM moon;
++---------+--------------------+-----------+--------------+--------------+
+| moon_id |        name        | planet_id | radius_in_km | is_spherical |
++---------+--------------------+-----------+--------------+--------------+
+|       1 | Moon               |         1 |       1737.4 | t            |
+|       2 | Phobos             |         2 |         11.3 | t            |
+|       3 | Deimos             |         2 |          6.2 | t            |
+|       4 | Ganymede           |         3 |       2634.1 | t            |
+|       5 | Europa             |         3 |       1560.8 | t            |
+|       6 | Callisto           |         3 |       2410.3 | t            |
+|       7 | Proxima Centauri I |         4 |         1000 | t            |
+|       8 | Sirius I           |         5 |         3000 | t            |
+|       9 | Betelgeuse I       |         6 |         4000 | t            |
+|      10 | Vega I             |         7 |         1500 | t            |
+|      11 | Rigel I            |         8 |         2500 | t            |
+|      12 | Mars II I          |         9 |           10 | t            |
+|      13 | Mars III I         |        10 |           11 | t            |
+|      14 | Mars IV I          |        11 |           12 | t            |
+|      15 | Mars V I           |        12 |           13 | t            |
+|      16 | Mars V II          |        12 |           14 | t            |
+|      17 | Mars V III         |        12 |           15 | t            |
+|      18 | Mars V IV          |        12 |           16 | t            |
+|      19 | Mars V V           |        12 |           17 | t            |
+|      20 | Mars V VI          |        12 |           18 | t            |
++---------+--------------------+-----------+--------------+--------------+
+(20 rows)
+
+universe=> 
+universe=> -- Check rows in galaxy_type table
+universe=> SELECT * FROM galaxy_type;
++----------------+------------+-----------------------------------------------+--------------------+--------------+
+| galaxy_type_id | type_name  |                  description                  | number_of_galaxies | average_size |
++----------------+------------+-----------------------------------------------+--------------------+--------------+
+|              1 | Spiral     | A galaxy with a spiral structure              |                100 |       100000 |
+|              2 | Elliptical | A galaxy that is roughly ellipsoidal in shape |                 50 |       200000 |
+|              3 | Irregular  | A galaxy with no distinct shape               |                 30 |        50000 |
++----------------+------------+-----------------------------------------------+--------------------+--------------+
+(3 rows)
+
+universe=> ALTER TABLE galaxy_type ADD COLUMN name VARCHAR(50) UNIQUE NOT NULL;
+ERROR:  column "name" contains null values
+universe=> UPDATE galaxy_type SET name = type_name;
+ERROR:  column "name" of relation "galaxy_type" does not exist
+LINE 1: UPDATE galaxy_type SET name = type_name;
+                               ^
+universe=> 
+universe=> ALTER TABLE galaxy_type ADD COLUMN name VARCHAR(50) UNIQUE NOT NULL;
+ERROR:  column "name" contains null values
+universe=> UPDATE galaxy_type 
+universe-> SET name = type_name 
+universe-> WHERE name IS NULL;
+ERROR:  column "name" does not exist
+LINE 3: WHERE name IS NULL;
+              ^
+universe=> SELECT * FROM galaxy_type WHERE name IS NULL;
+ERROR:  column "name" does not exist
+LINE 1: SELECT * FROM galaxy_type WHERE name IS NULL;
+                                        ^
+universe=> ALTER TABLE galaxy_type ADD COLUMN name VARCHAR(50);
+ALTER TABLE
+universe=> UPDATE galaxy_type 
+universe-> SET name = type_name;
+UPDATE 3
+universe=> ALTER TABLE galaxy_type 
+universe-> ALTER COLUMN name SET NOT NULL;
+ALTER TABLE
+universe=> 
+universe=> ALTER TABLE galaxy_type 
+universe-> ADD CONSTRAINT unique_name UNIQUE (name);
+ALTER TABLE
+universe=> SELECT * FROM galaxy_type;
++----------------+------------+-----------------------------------------------+--------------------+--------------+------------+
+| galaxy_type_id | type_name  |                  description                  | number_of_galaxies | average_size |    name    |
++----------------+------------+-----------------------------------------------+--------------------+--------------+------------+
+|              1 | Spiral     | A galaxy with a spiral structure              |                100 |       100000 | Spiral     |
+|              2 | Elliptical | A galaxy that is roughly ellipsoidal in shape |                 50 |       200000 | Elliptical |
+|              3 | Irregular  | A galaxy with no distinct shape               |                 30 |        50000 | Irregular  |
++----------------+------------+-----------------------------------------------+--------------------+--------------+------------+
+(3 rows)
+
+universe=> git remote add origin https://github.com/Linushankaran18/celestial-body-database.git
+universe-> git branch -M main
+universe-> git push -u origin main
